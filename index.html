@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+
+        button {
+            min-width: 80px;
+            min-height: 30px;
+            background: #ffa07a;
+            color: black;
+            border: 0;
+        }
+
+        button:active {
+            opacity: 0.7;
+        }
+
+        textarea {
+            min-width: 320px;
+            min-height: 120px;
+            display: block;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="title">Case Converter</div>
+<textarea aria-label="TextArea" id="text"></textarea>
+<button id="upper-case" value="Upper Case">Upper Case</button>
+<button id="lower-case" value="Lower Case">Lower Case</button>
+<button id="proper-case" value="Proper Case">Proper Case</button>
+<button id="sentence-case" value="Sentence Case">Sentence Case</button>
+<button id="save-text-file" value="Sentence Case">Save Text File</button>
+
+<script>
+    function download(filename, text) {
+        let element = document.createElement('a');
+        element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+        element.setAttribute('download', filename);
+
+        element.style.display = 'none';
+        document.body.appendChild(element);
+
+        element.click();
+
+        document.body.removeChild(element);
+    }
+
+    document.querySelector("#save-text-file").addEventListener("click", function () {
+        let textValue = document.getElementById('text').value
+        download("text.txt", textValue);
+    });
+    document.querySelector("#upper-case").addEventListener("click", function () {
+        let textValue = 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.';
+        document.getElementById('text').value = textValue.toUpperCase();
+    });
+    document.querySelector("#lower-case").addEventListener("click", function () {
+        let textValue = 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.';
+        document.getElementById('text').value = textValue.toLowerCase();
+    });
+
+    function capitalize(s) {
+        return s[0].toUpperCase() + s.slice(1);
+    }
+
+    document.querySelector("#proper-case").addEventListener("click", function () {
+        let textValue = 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.';
+        console.log(titleCase(textValue));
+        document.getElementById('text').value = titleCase(textValue);
+    });
+
+
+    function titleCase(str) {
+        return str.toLocaleLowerCase().replace(
+            /(^|\w)\S*/g,
+            (txt) => txt.charAt(0).toLocaleUpperCase() + txt.substring(1),
+        )
+    }
+
+    document.querySelector("#sentence-case").addEventListener("click", function () {
+        let textValue = 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.';
+        textValue = textValue.toLowerCase().split('. ');
+        console.log(textValue);
+        let sentences = '';
+        textValue.forEach(sentence => {
+            sentences += capitalize(sentence).replace('.', '') + '. ';
+
+        });
+        document.getElementById('text').value = sentences.trim();
+    });
+</script>
+</body>
+</html>
